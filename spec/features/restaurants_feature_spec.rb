@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'restuarants' do
+feature 'restaurants' do
   context 'no restaurants have been added' do
     scenario 'should display a prompt to add a restaurant' do
       visit '/restaurants'
@@ -15,7 +15,7 @@ feature 'restuarants' do
     end
 
     scenario 'display restaurants' do
-      visit '/restuarants'
+      visit '/restaurants'
       expect(page).to have_content('Nandos')
       expect(page).not_to have_content('No restaurants yet')
     end
