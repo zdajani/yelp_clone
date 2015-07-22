@@ -23,18 +23,18 @@ feature 'restaurants' do
 
   context 'creating restaurants' do
 
-    context 'an invalid restaurant' do
-      it 'does not let you submit a name that is too short' do
-        visit '/restaurants'
-        click_link 'Add a restaurant'
-        fill_in 'Name', with: 'Na'
-        click_button 'Create Restaurant'
-        expect(page).not_to have_css 'h2', text: 'Na'
-        expect(page).to have_content 'error'
-      end
+    scenario 'does not let you submit a name that is too short' do
+      sign_up
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'Na'
+      click_button 'Create Restaurant'
+      expect(page).not_to have_css 'h2', text: 'Na'
+      expect(page).to have_content 'error'
     end
 
     scenario 'prompts user to fill out a form, then displays the new restaurant' do
+      sign_up   
       visit '/restaurants'
       click_link 'Add a restaurant'
       fill_in 'Name', with: 'Nandos'
@@ -43,6 +43,12 @@ feature 'restaurants' do
       expect(current_path).to eq '/restaurants'
     end
   end
+
+    scenario 'a user that is not signed in cannot create a restaurant' do
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      expect(current_path).not_to eq '/restaurants/new'
+    end
 
   context 'viewing restaurants' do
     let!(:nandos){Restaurant.create(name:'Nandos')}
@@ -59,6 +65,7 @@ feature 'restaurants' do
     before {Restaurant.create name: 'Nandos'}
 
     scenario 'let a user edit a restaurant' do
+      sign_up
       visit '/restaurants'
       click_link 'Edit Nandos'
       fill_in 'Name', with: 'Nandos awesome chicken'
@@ -72,11 +79,22 @@ feature 'restaurants' do
     before {Restaurant.create name: 'Nandos'}
 
     scenario 'removes a restaurant when a user clicks a delete link' do
+      sign_up
       visit '/restaurants'
       click_link 'Delete Nandos'
       expect(page).not_to have_content 'Nandos'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
+  end
+
+
+  def sign_up
+    visit('/')
+    click_link('Sign up')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testtest')
+    fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
   end
 end
 
