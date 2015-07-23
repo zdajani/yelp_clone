@@ -10,11 +10,12 @@ feature 'restaurants' do
   end
 
   context 'restaurants have been added' do
-    before do
-      Restaurant.create(name: 'Nandos')
-    end
+    # before do
+    #   Restaurant.create(name: 'Nandos', user_id:)
+    # end
 
     scenario 'display restaurants' do
+      sign_up
       visit '/restaurants'
       expect(page).to have_content('Nandos')
       expect(page).not_to have_content('No restaurants yet')
@@ -87,12 +88,14 @@ feature 'restaurants' do
   end
 
   context 'deleting restaurants' do
-    before {Restaurant.create name: 'Nandos'}
-    scenario 'removes a restaurant when a user clicks a delete link' do
+    # before {Restaurant.create name: 'Nandos'}
+    scenario 'removes a restaurant when the user who created it clicks ra delete link' do
       sign_up
       visit '/restaurants'
-      click_link 'Delete Nandos'
-      expect(page).not_to have_content 'Nandos'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'Ippudo'
+      click_button 'Create Restaurant'
+      click_link 'Delete Ippudo'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
 
@@ -104,12 +107,8 @@ feature 'restaurants' do
       click_button 'Create Restaurant'
       click_link 'Sign out'
       visit('/')
-      click_link('Sign up')
-      fill_in('Email', with: 'k@j.com')
-      fill_in('Password', with: 'kjkjkjkj')
-      fill_in('Password confirmation', with: 'kjkjkjkj')
-      click_button('Sign up')
-      click_link('Delete Nandos')
+      sign_up_other
+      click_link('Delete Ippudo')
       expect(page).to have_content 'You can only delete restaurants which you added'
     end
   end
@@ -121,6 +120,15 @@ feature 'restaurants' do
     fill_in('Email', with: 'test@example.com')
     fill_in('Password', with: 'testtest')
     fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
+  end
+
+  def sign_up_other
+    visit('/')
+    click_link('Sign up')
+    fill_in('Email', with: 'k@j.com')
+    fill_in('Password', with: 'kjkjkjkj')
+    fill_in('Password confirmation', with: 'kjkjkjkj')
     click_button('Sign up')
   end
 end
