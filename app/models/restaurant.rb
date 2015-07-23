@@ -14,7 +14,6 @@ class Restaurant < ActiveRecord::Base
 
   def edit_as(user)
     return false unless self.user == user
-    # update
     true
   end
 end
