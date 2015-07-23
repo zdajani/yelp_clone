@@ -34,7 +34,7 @@ feature 'restaurants' do
     end
 
     scenario 'prompts user to fill out a form, then displays the new restaurant' do
-      sign_up   
+      sign_up
       visit '/restaurants'
       click_link 'Add a restaurant'
       fill_in 'Name', with: 'Nandos'
@@ -72,6 +72,17 @@ feature 'restaurants' do
       click_button 'Update Restaurant'
       expect(page).to have_content 'Nandos'
       expect(current_path).to eq '/restaurants'
+    end
+
+    scenario 'do not let a user edit a restaurant if they did not create it' do
+      sign_up
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'KFC'
+      click_button 'Create Restaurant'
+      click_link 'Sign out'
+      click_link 'Edit KFC'
+      expect(page).to have_content 'You can only edit restaurants which you added'
     end
   end
 
