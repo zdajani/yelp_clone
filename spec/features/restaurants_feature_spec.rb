@@ -90,8 +90,6 @@ feature 'restaurants' do
       login_as @user2
       visit '/restaurants'
       click_link 'Edit Nandos'
-      fill_in 'Name', with: 'Nandos awesome chicken'
-      click_button 'Update Restaurant'
       expect(page).to have_content 'You can only edit restaurants which you added'
     end
   end

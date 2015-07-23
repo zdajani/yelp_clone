@@ -1,6 +1,6 @@
 class RestaurantsController < ApplicationController
 
-  before_action :authenticate_user!, :except => [:index, :show]
+  before_action :authenticate_user!, :except => [:index, :show,]
 
   def index
     @restaurants = Restaurant.all
@@ -30,6 +30,12 @@ class RestaurantsController < ApplicationController
 
   def edit
     @restaurant = Restaurant.find(params[:id])
+    if @restaurant.edit_as current_user
+      
+    else 
+      redirect_to '/restaurants'
+      flash[:notice] = 'You can only edit restaurants which you added'
+    end
   end
 
   def update
