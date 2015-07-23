@@ -95,6 +95,23 @@ feature 'restaurants' do
       expect(page).not_to have_content 'Nandos'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
+
+    scenario 'does not let a user delete a restaurant which they did not create' do
+      sign_up
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'Ippudo'
+      click_button 'Create Restaurant'
+      click_link 'Sign out'
+      visit('/')
+      click_link('Sign up')
+      fill_in('Email', with: 'k@j.com')
+      fill_in('Password', with: 'kjkjkjkj')
+      fill_in('Password confirmation', with: 'kjkjkjkj')
+      click_button('Sign up')
+      click_link('Delete Nandos')
+      expect(page).to have_content 'You can only delete restaurants which you added'
+    end
   end
 
 
