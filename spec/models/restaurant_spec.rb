@@ -18,6 +18,20 @@ describe Restaurant, :type => :model do
     restaurant = Restaurant.new(name: 'Nandos')
     expect(restaurant).to have(1).error_on(:name)
   end
+  
+  
+  it 'can only be deleted by the user who created it' do
+    nandos = Restaurant.find_by(name: 'Nandos')
+    current_user = User.find_by(email: 'fake@gmail.com')
+    nandos.destroy_as current_user
+    expect(Restaurant.find_by(name: 'Nandos')).to be nil
+  end
+
+  it 'cannot be deleted by a user other then the one who created it' do 
+    nandos = Restaurant.find_by(name: 'Nandos')
+    user2 = User.create email: 'fake2@gmail.com', password: '12345678', password_confirmation: '12345678'
+    expect(nandos.destroy_as user2).to be false
+  end
 end
 
 describe 'reviews' do
