@@ -26,7 +26,7 @@ class ReviewsController < ApplicationController
     else
       flash[:notice] = 'You can only delete reviews which you added'
     end
-    redirect_to '/restaurants'
+    redirect_to root_path
   end
   
   def review_params

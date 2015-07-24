@@ -12,7 +12,7 @@ feature 'restaurants' do
 
   context 'restaurants have been added' do
     before do
-      user = User.create email: 'tansaku@gmail.com', password: '12345678', password_confirmation: '12345678'
+      user = User.create email: 'fake@gmail.com', password: '12345678', password_confirmation: '12345678'
       user.restaurants.create(name: 'Nandos')
     end
 
@@ -83,12 +83,12 @@ feature 'restaurants' do
       fill_in 'Name', with: 'Nandos awesome chicken'
       click_button 'Update Restaurant'
       expect(page).to have_content 'Nandos'
-      expect(current_path).to eq '/restaurants'
+      expect(current_path).to eq '/'
     end
 
     scenario 'do not let a user edit a restaurant if they did not create it' do
       login_as @user2
-      visit '/restaurants'
+      visit '/'
       click_link 'Edit Nandos'
       expect(page).to have_content 'You can only edit restaurants which you added'
     end
