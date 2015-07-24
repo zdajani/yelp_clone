@@ -102,9 +102,8 @@ feature 'restaurants' do
     end
 
     before do
-      nandos = @user.restaurants.create(name: 'Nandos')
+      @nandos = @user.restaurants.create(name: 'Nandos')
     end
-
 
     scenario 'removes a restaurant when the user who created it clicks delete link' do
       visit '/'
@@ -121,16 +120,6 @@ feature 'restaurants' do
     end
   end
 
-
-  # def sign_up
-  #   visit('/')
-  #   click_link('Sign up')
-  #   fill_in('Email', with: 'test@example.com')
-  #   fill_in('Password', with: 'testtest')
-  #   fill_in('Password confirmation', with: 'testtest')
-  #   click_button('Sign up')
-  # end
-  #
   def sign_up_other
     visit('/')
     click_link('Sign up')
